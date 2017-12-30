@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Layout from 'components/layout/index'
-import LayoutTest from 'components/layout-test'
+import SortPage from 'components/algorithm/sort-page'
 
 Vue.use(Router)
 
@@ -14,9 +14,9 @@ export default new Router({
       component: Layout
     },
     {
-      path: '/test',
-      name: 'test',
-      component: LayoutTest
+      path: '/sort-list',
+      name: 'sort',
+      component: SortPage
     }
   ]
 })
