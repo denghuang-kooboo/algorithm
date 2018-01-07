@@ -8,9 +8,8 @@
       <el-col :span="2">间距</el-col>
       <el-col :span="3"><el-input v-model="create.step"></el-input></el-col>
       <el-col :span="2"></el-col>
-      <el-col :span="3"><el-button @click="generate">生成数据</el-button></el-col>
-      <el-col :span="2"><el-button @click="clear">清空</el-button></el-col>
-      <el-col :span="2"><el-button @click="sortHandler">排序</el-button></el-col>
+      <el-col :span="4"><el-button @click="generate">生成数据</el-button></el-col>
+      <el-col :span="3"><el-button @click="sortHandler">排序</el-button></el-col>
     </el-row>
     <el-row>
       <el-col :span="2">总耗时：</el-col>
@@ -47,6 +46,7 @@
 <script>
 import _ from 'lodash'
 import Mock from 'mockjs'
+import sort from 'sort-list/insertion'
 export default {
   name: 'sort-base',
   data () {
@@ -64,9 +64,21 @@ export default {
   },
   computed: {
     input () {
+      let length = this.inputData.length
+      if (length > 20) {
+        let prevData = _.slice(this.inputData, 0, 10)
+        let lastData = _.slice(this.inputData, length - 10, length)
+        return _.join(prevData, ' , ') + ' , ...... , ' + _.join(lastData, ' , ')
+      }
       return _.join(this.inputData, ' , ')
     },
     result () {
+      let length = this.resultData.length
+      if (length > 20) {
+        let prevData = _.slice(this.resultData, 0, 10)
+        let lastData = _.slice(this.resultData, length - 10, length)
+        return _.join(prevData, ' , ') + ' , ...... , ' + _.join(lastData, ' , ')
+      }
       return _.join(this.resultData, ' , ')
     },
     isValid () {
@@ -119,7 +131,7 @@ export default {
         return
       }
       let data = _.cloneDeep(this.inputData)
-      let sort = require('sort-list/insertion')
+      // let sort = require('sort-list/insertion')
       this.loading = true
       setTimeout(() => {
         this.$nextTick(() => {
@@ -135,18 +147,6 @@ export default {
           })
         })
       }, 200)
-    },
-    clear () {
-      this.create = {
-        begin: 1,
-        end: 100,
-        step: 1
-      }
-      this.generate()
-      this.$message({
-        message: '数据清空成功！',
-        type: 'success'
-      })
     }
   },
   watch: {
